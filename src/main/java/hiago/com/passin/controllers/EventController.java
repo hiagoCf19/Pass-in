@@ -1,5 +1,7 @@
 package hiago.com.passin.controllers;
 
+import hiago.com.passin.dto.attendee.AttendeeIdDTO;
+import hiago.com.passin.dto.attendee.AttendeeRequestDTO;
 import hiago.com.passin.dto.attendee.AttendeesListResponseDTO;
 import hiago.com.passin.dto.event.EventIdDTO;
 import hiago.com.passin.dto.event.EventRequestDTO;
@@ -37,5 +39,16 @@ public class EventController {
         AttendeesListResponseDTO attendeesListResponse= this.attendeeService.getEventsAttendee(id);
         return ResponseEntity.ok(attendeesListResponse);
     }
+    @PostMapping("/{eventId}/attendees")
+    public ResponseEntity<AttendeeIdDTO> registerParticipant(@PathVariable String eventId, @RequestBody AttendeeRequestDTO body, UriComponentsBuilder uriComponentsBuilder){
+
+        AttendeeIdDTO attendeeIdDTO= this.eventService.registerAttendeeOnEvent(eventId, body);
+
+        var uri= uriComponentsBuilder.path("attendees/{attendeeId}/badge").buildAndExpand(attendeeIdDTO.attendeeId()).toUri();
+        return ResponseEntity.created(uri).body(attendeeIdDTO);
+
+    }
+
+
 
 }

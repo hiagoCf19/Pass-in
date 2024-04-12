@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+# HyperSQL database file
+database/myDb.script
+
